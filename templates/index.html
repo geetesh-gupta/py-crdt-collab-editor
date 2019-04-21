@@ -2,9 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Py-CRDT-Collab-Editor</title>
+    <title>BTP</title>
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename = 'codemirror/lib/codemirror.css') }}">
 </head>
 <body>
-Hello, world!
+<textarea id="codemirror" style="border:black 1px solid; height:100vh; width:100vw;"></textarea>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'codemirror/lib/codemirror.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/default.js') }}"></script>
 </body>
 </html>
