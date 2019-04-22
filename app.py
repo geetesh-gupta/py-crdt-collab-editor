@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for
 import requests
 import uuid
 import time
-import json
+import random
 
 # Import Sequence CRDT
 from static.crdt.sequence import Sequence
@@ -29,9 +29,15 @@ def insert(elem):
             seq.add(elem, (seq.id_seq[pos - 1] + seq.id_seq[pos]) / 2)
     else:
         if pos == 0:
-            seq.add(elem, 0.5)
+            if 0.5 in seq.id_remv_list:
+                seq.add(elem, 0.5 + randrange_float(0.00005, 0.005, 0.00005))
+            else:
+                seq.add(elem, 0.5)
         else:
-            seq.add(elem, pos)
+            if pos in seq.id_remv_list:
+                seq.add(elem, pos + randrange_float(0.00005, 0.005, 0.00005))
+            else:
+                seq.add(elem, pos)
     print(seq.get_seq())
     return seq.get_seq()
 
@@ -39,11 +45,12 @@ def insert(elem):
 @app.route("/remove/<pos>/")
 def remove(pos):
     global seq
-    if int(pos) < len(seq.id_seq):
+    if int(pos) <= len(seq.id_seq):
         id = seq.id_seq[int(pos) - 1]
         seq.remove(id)
     elif int(pos) == 0:
         pass
+
     print(seq.get_seq())
     return seq.get_seq()
 
@@ -58,8 +65,8 @@ def update():
             base_url = request.url_root[:-5] + str(i)
             merge_url = base_url + url_for('merge')
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-            # Send sequence object in call to other port
 
+            # Send sequence object in call to other port
             r = requests.get(merge_url, json={'elem_list': seq.elem_list, 'id_remv_list': seq.id_remv_list},
                              headers=headers)
 
@@ -90,6 +97,10 @@ def get_time():
 def create_unique_id(pos, frac):
     id = pos + float(frac / pow(10, len(str(frac))))
     return id
+
+
+def randrange_float(start, stop, step):
+    return random.randint(0, int((stop - start) / step)) * step + start
 
 
 if __name__ == "__main__":

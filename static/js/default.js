@@ -6,16 +6,17 @@ editor.on('beforeChange', function (cm, obj) {
     var doc = editor.getDoc();
     var cursor = doc.getCursor();
 
-    if (obj.origin === "+delete") {
+    if (obj.origin === "+input") {
+        $.get("/insert/" + obj.text[0] + '/', {'pos': cursor.ch}, function () {
+            update()
+        })
+    } else if (obj.origin === "+delete") {
         if (cursor.ch > 0) {
-            $.get("/remove/" + cursor.ch, function () {
+            $.get("/remove/" + cursor.ch + '/', function () {
+                console.log("Removed")
                 update()
             })
         }
-    } else if (obj.origin === "+input") {
-        $.get("/insert/" + obj.text[0], {'pos': cursor.ch}, function () {
-            update()
-        })
     }
 });
 
@@ -33,6 +34,7 @@ function updatetextarea() {
         type: "GET",
         url: "/get",
     }).done(function (o) {
+        console.log(o)
         var doc = editor.getDoc();
         var cursor = doc.getCursor();
         editor.setValue(o)
