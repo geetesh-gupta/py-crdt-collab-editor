@@ -77,10 +77,17 @@ class Sequence():
                     return False
         return False
 
-    def merge(self, seq):
-        self.elem_list = self.seqf.merge(self.elem_list, seq.elem_list)
-        self.id_remv_list = self.seqf.merge(self.id_remv_list, seq.id_remv_list)
+    # def merge(self, seq):
+    #     self.elem_list = self.seqf.merge(self.elem_list, seq.elem_list)
+    #     self.id_remv_list = self.seqf.merge(self.id_remv_list, seq.id_remv_list)
+    #     self.update_seq("a")
+    def merge(self, list, func):
+        if func == 'elem':
+            self.elem_list = self.seqf.merge(self.elem_list, list)
+        elif func == 'id':
+            self.id_remv_list = self.seqf.merge(self.id_remv_list, list)
         self.update_seq("a")
+
 
     def display(self):
         self.seqf.display("Elem List", self.elem_list)
