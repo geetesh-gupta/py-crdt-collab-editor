@@ -30,12 +30,12 @@ def insert(elem):
     else:
         if pos == 0:
             if 0.5 in seq.id_remv_list:
-                seq.add(elem, 0.5 + randrange_float(0.00005, 0.005, 0.00005))
+                seq.add(elem, 0.5 + randrange_float(0.00000005, 0.000005, 0.00000005))
             else:
                 seq.add(elem, 0.5)
         else:
             if pos in seq.id_remv_list:
-                seq.add(elem, pos + randrange_float(0.00005, 0.005, 0.00005))
+                seq.add(elem, pos + randrange_float(0.00000005, 0.000005, 0.00000005))
             else:
                 seq.add(elem, pos)
     print(seq.get_seq())
