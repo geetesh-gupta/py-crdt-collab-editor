@@ -5,7 +5,7 @@ import time
 import random
 
 # Import Sequence CRDT
-from static.crdt.sequence import Sequence
+from py3crdt.sequence import Sequence
 
 app = Flask(__name__)
 seq = Sequence(uuid.uuid4())
